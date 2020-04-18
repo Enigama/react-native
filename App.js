@@ -6,14 +6,12 @@ import HomeScreen from "./components/Screens/HomeScreen/HomeScreen";
 import AboutScreen from "./components/Screens/AboutScreen/AboutScreen";
 import ListScreen from "./components/Screens/ListScreen/ListScreen";
 
-// import 'react-native-gesture-handler';
-
 const Stack = createStackNavigator();
 
 const App = () => {
   return(
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="List">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="About" component={AboutScreen} />
         <Stack.Screen name="List" component={ListScreen}/>
