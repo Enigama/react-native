@@ -7,14 +7,17 @@ const ImageScreen = () => {
     {
         title: 'Beach',
         img: require('../../../assets/beach.jpg'),
+        score: 9,
     },
     {
         title: 'Forest',
         img: require('../../../assets/forest.jpg'),
+        score: 6,
     },
     {
         title: 'Mountain',
         img: require('../../../assets/mountain.jpeg'),
+        score: 10,
     },
 
   ]
@@ -24,9 +27,9 @@ const ImageScreen = () => {
       <Text>Image Screen</Text>
       {
         detail.map((item, index) => {
-          const {title, img} = item;
+          const {title, img, score} = item;
 
-          return <ImageDetail title={title} img={img} key={index}/>
+          return <ImageDetail title={title} img={img} key={index} score={score}/>
         })
       }
     </View>

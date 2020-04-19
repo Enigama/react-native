@@ -1,10 +1,9 @@
 import React from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
 
-const ImageDetail = ({title, img}) => {
+const ImageDetail = ({title, img, score}) => {
   const style = StyleSheet.create({
     Wrapper: {
-      flexDirection: 'row',
     },
     Image: {
       width: 128,
@@ -17,6 +16,7 @@ const ImageDetail = ({title, img}) => {
     <View style={style.Wrapper}>
       <Image source={img} style={style.Image}/>
       <Text>{title}</Text>
+      <Text>Image score - {score}</Text>
     </View>
   )
 };
