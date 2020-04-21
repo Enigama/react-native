@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import {Button, FlatList, StyleSheet, Text, View} from "react-native";
 import ColorRange from "../../shared/ColorRange";
 
@@ -10,6 +10,7 @@ const style = StyleSheet.create({
 });
 
 const COLOR_INCREMENT = 15;
+const titles = ['Red', 'Green', 'Blue'];
 
 const getRandomColor = () => {
   const red = Math.floor(Math.random() * 256);
@@ -18,30 +19,32 @@ const getRandomColor = () => {
   return `rgb(${red},${green},${blue})`
 };
 
+const reducer = (state, action) => {
+  switch (action.colorToChange) {
+    case titles[0]:
+      return {
+        ...state,
+        red: state.red + action.amount
+      };
+    case titles[1]:
+      return {
+        ...state,
+        green: state.green + action.amount
+      };
+    case titles[2]:
+      return {
+        ...state,
+        blue: state.blue + action.amount
+      };
+    default:
+      return state;
+  }
+};
+
 const ColorScreen = () => {
   const [colors, setColors] = useState([]);
-  const [red, setRed] = useState(0);
-  const [green, setGreen] = useState(0);
-  const [blue, setBlue] = useState(0);
-
-  const titles = ['Red', 'Green', 'Blue'];
-
-  const setColor = (color, changeValue) => {
-    switch (color) {
-      case titles[0]:
-        red + changeValue > 255 || red + changeValue < 0 ? null : setRed(red + changeValue);
-        break;
-      case titles[1]:
-        green + changeValue > 255 || green + changeValue < 0 ? null : setGreen(green + changeValue);
-        break;
-      case titles[2]:
-        blue + changeValue > 255 || blue + changeValue < 0 ? null : setBlue(blue + changeValue);
-        break;
-      default:
-        console.error('something going wrong');
-        break;
-    }
-  };
+  const [state, dispatch] = useReducer(reducer, {red: 0, green: 0, blue: 0});
+  const {red, green, blue} = state;
 
   return (
     <View>
@@ -63,8 +66,8 @@ const ColorScreen = () => {
           return (
             <ColorRange title={item}
                         key={index}
-                        onIncrease={(color) => setColor(color, COLOR_INCREMENT)}
-                        onDecrease={(color) => setColor(color, -1 * COLOR_INCREMENT)}/>
+                        onIncrease={(color) => dispatch({colorToChange: color, amount: COLOR_INCREMENT})}
+                        onDecrease={(color) => dispatch({colorToChange: color, amount: -1 * COLOR_INCREMENT})}/>
           )
         })
       }
