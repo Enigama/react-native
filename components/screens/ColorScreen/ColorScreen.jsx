@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View, Button, StyleSheet, FlatList} from "react-native";
+import {Button, FlatList, StyleSheet, Text, View} from "react-native";
 import ColorRange from "../../shared/ColorRange";
 
 const style = StyleSheet.create({
@@ -24,54 +24,48 @@ const ColorScreen = () => {
   const [green, setGreen] = useState(0);
   const [blue, setBlue] = useState(0);
 
-  // console.log(red, green, blue, 'colors');
-
   const titles = ['Red', 'Green', 'Blue'];
 
-  const changeColor = (colorName, sign) => {
-    switch (colorName) {
+  const setColor = (color, changeValue) => {
+    switch (color) {
       case titles[0]:
-        if (!sign) {
-          setRed(red + COLOR_INCREMENT);
-          return;
-        }
-        setRed(red - COLOR_INCREMENT);
+        red + changeValue > 255 || red + changeValue < 0 ? null : setRed(red + changeValue);
         break;
       case titles[1]:
-        if (!sign) {
-          setGreen(green + COLOR_INCREMENT);
-          return;
-        }
-        setGreen(green - COLOR_INCREMENT);
+        green + changeValue > 255 || green + changeValue < 0 ? null : setGreen(green + changeValue);
         break;
       case titles[2]:
-        if (!sign){
-          setBlue(blue + COLOR_INCREMENT);
-          return;
-        }
-        setBlue(blue - COLOR_INCREMENT);
+        blue + changeValue > 255 || blue + changeValue < 0 ? null : setBlue(blue + changeValue);
+        break;
+      default:
+        console.error('something going wrong');
         break;
     }
   };
 
-  return(
+  return (
     <View>
       <Text>Color Screen</Text>
       <Button title="Add color" onPress={() => {
         setColors([...colors, getRandomColor(),]);
       }}/>
       <FlatList keyExtractor={color => color}
-      data={colors}
-      renderItem={({item}) => {
-        return(
-          <View
-            style={{...style.ColorBox, backgroundColor: item}}
-          />
-        )
-      }}/>
+                data={colors}
+                renderItem={({item}) => {
+                  return (
+                    <View
+                      style={{...style.ColorBox, backgroundColor: item}}
+                    />
+                  )
+                }}/>
       {
         titles.map((item, index) => {
-          return <ColorRange title={item} key={index} onChange={changeColor}/>
+          return (
+            <ColorRange title={item}
+                        key={index}
+                        onIncrease={(color) => setColor(color, COLOR_INCREMENT)}
+                        onDecrease={(color) => setColor(color, -1 * COLOR_INCREMENT)}/>
+          )
         })
       }
 
