@@ -20,22 +20,19 @@ const getRandomColor = () => {
 };
 
 const reducer = (state, action) => {
-  switch (action.colorToChange) {
-    case titles[0]:
-      return {
-        ...state,
-        red: state.red + action.amount
-      };
-    case titles[1]:
-      return {
-        ...state,
-        green: state.green + action.amount
-      };
-    case titles[2]:
-      return {
-        ...state,
-        blue: state.blue + action.amount
-      };
+  switch (action.type) {
+    case `change_${titles[0]}`:
+      return state.red + action.payload > 255 || state.red + action.payload < 0
+        ? state
+        : {...state, red: state.red + action.payload };
+    case `change_${titles[1]}`:
+      return state.green + action.payload > 255 || state.green + action.payload < 0
+        ? state
+        : {  ...state, green: state.green + action.payload };
+    case `change_${titles[2]}`:
+      return state.blue + action.payload > 255 || state.blue + action.payload < 0
+        ? state
+        : { ...state, blue: state.blue + action.payload};
     default:
       return state;
   }
@@ -66,8 +63,8 @@ const ColorScreen = () => {
           return (
             <ColorRange title={item}
                         key={index}
-                        onIncrease={(color) => dispatch({colorToChange: color, amount: COLOR_INCREMENT})}
-                        onDecrease={(color) => dispatch({colorToChange: color, amount: -1 * COLOR_INCREMENT})}/>
+                        onIncrease={(color) => dispatch({ type: `change_${color}`, payload: COLOR_INCREMENT})}
+                        onDecrease={(color) => dispatch({ type: `change_${color}`, payload: -1 * COLOR_INCREMENT})}/>
           )
         })
       }
